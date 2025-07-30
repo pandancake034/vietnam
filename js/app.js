@@ -33,7 +33,7 @@ const useFirestoreQuery = (query) => {
             setIsLoading(false);
         });
         return () => unsubscribe();
-    }, []); // Afhankelijkheden bewust leeg gelaten voor eenmalige setup
+    }, []);
 
     return { data, isLoading, error };
 };
@@ -116,7 +116,7 @@ const PlaceholderPage = ({ title }) => (
     </Card>
 );
 
-// === PAGINA COMPONENTEN (opgeschoond) ===
+// === PAGINA COMPONENTEN ===
 
 function HomePage() {
     return (
@@ -209,39 +209,39 @@ function ExpensesPage() {
 
     return (
         <div>
-        <Card className="mb-6">
-            <h3 className="font-bold text-lg mb-3">Nieuwe uitgave</h3>
-            <form onSubmit={handleAddExpense} className="space-y-3">
-            <input type="text" placeholder="Omschrijving" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-2 border border-border rounded-md" />
-            <input type="number" step="0.01" placeholder="Bedrag in € (EUR)" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full p-2 border border-border rounded-md" />
-            <div className="flex items-center space-x-4">
-                <label className="font-semibold">Betaald door:</label>
-                <div className="flex items-center"> <input type="radio" id="dewika" name="paidBy" value="Dewika" checked={paidBy === 'Dewika'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="dewika" className="ml-2">Dewika</label> </div>
-                <div className="flex items-center"> <input type="radio" id="reisgenoot" name="paidBy" value="Reisgenoot" checked={paidBy === 'Reisgenoot'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="reisgenoot" className="ml-2">Reisgenoot</label> </div>
-            </div>
-            <button type="submit" className="w-full bg-accent text-white font-bold p-2 mt-1 rounded-md hover:bg-blue-600 transition-colors">Toevoegen</button>
-            </form>
-        </Card>
-
-        <Card>
-            <div className="flex justify-between items-center mb-3">
-                <h3 className="font-bold text-lg">Recente uitgaven</h3>
-                <div className="font-bold text-lg text-accent">{formatCurrency(totalAmount)}</div>
-            </div>
-            {isLoading ? <LoadingSpinner /> : expenses.length === 0 ? (
-            <p className="text-text-secondary text-center p-4">Nog geen uitgaven toegevoegd.</p>
-            ) : (
-            <div className="space-y-3">
-                {currentItems.map(expense => (
-                <div key={expense.id} className="border-b border-border pb-2 last:border-b-0 flex justify-between items-center">
-                    <div><p className="font-semibold">{expense.description}</p><p className="text-sm text-text-secondary">Betaald door {expense.paidBy}</p></div>
-                    <div className="flex items-center space-x-4"><p className="font-semibold">{formatCurrency(expense.amount)}</p><button onClick={() => handleDeleteExpense(expense.id)} className="text-text-secondary hover:text-red-500"><i className="fa-solid fa-trash-can"></i></button></div>
+            <Card className="mb-6">
+                <h3 className="font-bold text-lg mb-3">Nieuwe uitgave</h3>
+                <form onSubmit={handleAddExpense} className="space-y-3">
+                <input type="text" placeholder="Omschrijving" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-2 border border-border rounded-md" />
+                <input type="number" step="0.01" placeholder="Bedrag in € (EUR)" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full p-2 border border-border rounded-md" />
+                <div className="flex items-center space-x-4">
+                    <label className="font-semibold">Betaald door:</label>
+                    <div className="flex items-center"> <input type="radio" id="dewika" name="paidBy" value="Dewika" checked={paidBy === 'Dewika'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="dewika" className="ml-2">Dewika</label> </div>
+                    <div className="flex items-center"> <input type="radio" id="reisgenoot" name="paidBy" value="Reisgenoot" checked={paidBy === 'Reisgenoot'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="reisgenoot" className="ml-2">Reisgenoot</label> </div>
                 </div>
-                ))}
-            </div>
-            )}
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-        </Card>
+                <button type="submit" className="w-full bg-accent text-white font-bold p-2 mt-1 rounded-md hover:bg-blue-600 transition-colors">Toevoegen</button>
+                </form>
+            </Card>
+
+            <Card>
+                <div className="flex justify-between items-center mb-3">
+                    <h3 className="font-bold text-lg">Recente uitgaven</h3>
+                    <div className="font-bold text-lg text-accent">{formatCurrency(totalAmount)}</div>
+                </div>
+                {isLoading ? <LoadingSpinner /> : expenses.length === 0 ? (
+                <p className="text-text-secondary text-center p-4">Nog geen uitgaven toegevoegd.</p>
+                ) : (
+                <div className="space-y-3">
+                    {currentItems.map(expense => (
+                    <div key={expense.id} className="border-b border-border pb-2 last:border-b-0 flex justify-between items-center">
+                        <div><p className="font-semibold">{expense.description}</p><p className="text-sm text-text-secondary">Betaald door {expense.paidBy}</p></div>
+                        <div className="flex items-center space-x-4"><p className="font-semibold">{formatCurrency(expense.amount)}</p><button onClick={() => handleDeleteExpense(expense.id)} className="text-text-secondary hover:text-red-500"><i className="fa-solid fa-trash-can"></i></button></div>
+                    </div>
+                    ))}
+                </div>
+                )}
+                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+            </Card>
         </div>
     );
 }
@@ -329,6 +329,55 @@ function ItineraryPage() {
     );
 }
 
+// --- NIEUW: Hotel Pagina ---
+function HotelPage() {
+    const hotel = {
+        name: 'Metropolex',
+        stars: 4,
+        checkIn: '2025-07-20',
+        checkOut: '2025-07-28',
+        address: '21 Lý Thường Kiệt, Phan Chu Trinh, Hoàn Kiếm, Hà Nội, Vietnam',
+        imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/542998399.jpg?k=13b5dcf867086064f51d33192455490bb6dc4b2c050730b2da6b0c6f1452427f&o=&hp=1',
+    };
+
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`;
+
+    const renderStars = (count) => {
+        const stars = [];
+        for (let i = 0; i < 5; i++) {
+            stars.push(<i key={i} className={`fa-solid fa-star ${i < count ? 'text-yellow-400' : 'text-gray-300'}`}></i>);
+        }
+        return stars;
+    };
+
+    return (
+        <div className="space-y-4">
+            <Card className="!p-0 overflow-hidden">
+                <img src={hotel.imageUrl} alt={`Foto van ${hotel.name}`} className="w-full h-48 object-cover" />
+                <div className="p-4">
+                    <h2 className="text-2xl font-bold text-text-primary">{hotel.name}</h2>
+                    <div className="flex items-center my-2">
+                        {renderStars(hotel.stars)}
+                    </div>
+                    <div className="text-sm text-text-secondary space-y-1">
+                        <p><i className="fa-solid fa-calendar-check fa-fw mr-2 text-accent"></i>Verblijf van {new Date(hotel.checkIn).toLocaleDateString('nl-NL')} tot {new Date(hotel.checkOut).toLocaleDateString('nl-NL')}</p>
+                        <p><i className="fa-solid fa-location-dot fa-fw mr-2 text-accent"></i>{hotel.address}</p>
+                    </div>
+                    <a 
+                        href={googleMapsUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block w-full text-center bg-accent text-white font-bold p-2 mt-4 rounded-md hover:bg-blue-600 transition-colors"
+                    >
+                        Open in Google Maps
+                    </a>
+                </div>
+            </Card>
+        </div>
+    );
+}
+
+
 // === Hoofd App Component ===
 function App() {
     const [isSidebarOpen, setSidebarOpen] = React.useState(false);
@@ -348,9 +397,12 @@ function App() {
     const getGreeting = () => { const h = new Date().getHours(); return h < 6 ? 'Goedenacht' : h < 12 ? 'Goedemorgen' : h < 18 ? 'Goedemiddag' : 'Goedenavond'; };
 
     const pageComponents = {
-        'Home': <HomePage />, 'Reisschema': <ItineraryPage />,
-        'Hotels': <PlaceholderPage title="Hotels" />, 'Vliegschema': <PlaceholderPage title="Vliegschema" />,
-        'Uitgaven': <ExpensesPage />, 'Weer': <WeatherPage />,
+        'Home': <HomePage />, 
+        'Reisschema': <ItineraryPage />,
+        'Hotels': <HotelPage />, // Aangepast
+        'Vliegschema': <PlaceholderPage title="Vliegschema" />,
+        'Uitgaven': <ExpensesPage />, 
+        'Weer': <WeatherPage />,
     };
 
     const navItems = [
@@ -366,37 +418,37 @@ function App() {
 
     return (
         <div className="max-w-md mx-auto h-screen bg-background shadow-lg flex flex-col">
-        <aside className={`fixed top-0 left-0 h-full w-64 bg-surface text-text-primary p-6 z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-            <div className="flex justify-between items-center mb-8">
-            <h2 className="text-xl font-bold text-accent">Menu</h2>
-            <button onClick={() => setSidebarOpen(false)} className="text-2xl text-text-secondary"><i className="fa-solid fa-times"></i></button>
-            </div>
-            <nav><ul className="space-y-4">
-                {navItems.map(item => (
-                    <li key={item.page}>
-                        <button onClick={() => navigateTo(item.page)} className="flex items-center space-x-3 text-lg hover:text-accent w-full text-left">
-                            <i className={`fa-solid ${item.icon} fa-fw`}></i><span>{item.label}</span>
-                        </button>
-                    </li>
-                ))}
-            </ul></nav>
-        </aside>
-        <div className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={() => setSidebarOpen(false)}></div>
-        
-        <header className="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-surface z-10">
-            <button onClick={() => setSidebarOpen(true)} className="text-text-primary w-10 h-10 flex flex-col justify-center items-start space-y-1.5">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 18H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-            </button>
-            <div className="flex-grow text-center">
-                <p className="text-sm text-text-secondary">{getGreeting()}</p>
-                <h1 className="text-lg font-bold text-text-primary">Hello, Dewika</h1>
-            </div>
-            <div className="w-10 h-10"><img src="https://i.pravatar.cc/150?u=dewika" alt="Profielfoto" className="w-full h-full rounded-full object-cover" /></div>
-        </header>
-        
-        <main className="flex-grow p-4 overflow-y-auto">
-            {pageComponents[activePage]}
-        </main>
+            <aside className={`fixed top-0 left-0 h-full w-64 bg-surface text-text-primary p-6 z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-xl font-bold text-accent">Menu</h2>
+                    <button onClick={() => setSidebarOpen(false)} className="text-2xl text-text-secondary"><i className="fa-solid fa-times"></i></button>
+                </div>
+                <nav><ul className="space-y-4">
+                    {navItems.map(item => (
+                        <li key={item.page}>
+                            <button onClick={() => navigateTo(item.page)} className="flex items-center space-x-3 text-lg hover:text-accent w-full text-left">
+                                <i className={`fa-solid ${item.icon} fa-fw`}></i><span>{item.label}</span>
+                            </button>
+                        </li>
+                    ))}
+                </ul></nav>
+            </aside>
+            <div className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={() => setSidebarOpen(false)}></div>
+            
+            <header className="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-surface z-10">
+                <button onClick={() => setSidebarOpen(true)} className="text-text-primary w-10 h-10 flex flex-col justify-center items-start space-y-1.5">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 18H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                </button>
+                <div className="flex-grow text-center">
+                    <p className="text-sm text-text-secondary">{getGreeting()}</p>
+                    <h1 className="text-lg font-bold text-text-primary">Hello, Dewika</h1>
+                </div>
+                <div className="w-10 h-10"><img src="https://i.pravatar.cc/150?u=dewika" alt="Profielfoto" className="w-full h-full rounded-full object-cover" /></div>
+            </header>
+            
+            <main className="flex-grow p-4 overflow-y-auto">
+                {pageComponents[activePage]}
+            </main>
         </div>
     );
 }
