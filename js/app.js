@@ -441,7 +441,7 @@ function App() {
                 </button>
                 <div className="flex-grow text-center">
                     <p className="text-sm text-text-secondary">{getGreeting()}</p>
-                    <h1 className="text-lg font-bold text-text-primary">Hello, Dewika</h1>
+                    <h1 className="text-lg font-bold text-text-primary">Hello, Dewika!</h1>
                 </div>
                 <div className="w-10 h-10"><img src="https://i.pravatar.cc/150?u=dewika" alt="Profielfoto" className="w-full h-full rounded-full object-cover" /></div>
             </header>
