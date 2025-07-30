@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reisschema Toevoegen</title>
+
+    <!-- Scripts en Links -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // === Firebase Initialisatie ===
+      // VUL HIER JE EIGEN FIREBASE CONFIG IN
+      const firebaseConfig = {
+        apiKey: "AIzaSyDIie6rsUl6oNoIbJeqfxqLcWT02xQTU_Y",
+        authDomain: "vietnamv2-de066.firebaseapp.com",
+        projectId: "vietnamv2-de066",
+        storageBucket: "vietnamv2-de066.appspot.com",
+        messagingSenderId: "793608640911",
+        appId: "1:793608640911:web:6924a0e6c1b8c8d30093fa"
+      };
+      
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const itineraryCollection = db.collection('itinerary');
+
+      // --- Simpele App om Items Toe te Voegen ---
+      function AddItemForm() {
+        // AANGEPAST: Standaardwaarde voor de datum ingesteld
+        const [date, setDate] = React.useState('2025-10-30'); 
+        const [city, setCity] = React.useState('Hanoi'); 
+        const [activity, setActivity] = React.useState('');
+        const [notes, setNotes] = React.useState('');
+        const [status, setStatus] = React.useState('');
+
+        const cities = [
+            "Hanoi", "Ho Chi Minh", "Sapa", "Hoi An", "Da Nang", 
+            "Phong Nha", "Ha Long Bay/Lan Ha Bay", "Ninh Binh", "Ha Giang Loop",
+            "Doha", "Amsterdam"
+        ];
+
+        const handleSubmit = async (event) => {
+          event.preventDefault();
+          if (!date || !city || !activity) {
+            setStatus('Fout: Vul datum, stad en activiteit in.');
+            return;
+          }
+          
+          setStatus('Bezig met toevoegen...');
+
+          try {
+            await itineraryCollection.add({
+              date,
+              city,
+              activity,
+              notes,
+              completed: false
+            });
+            
+            setStatus(`Succes! "${activity}" in ${city} is toegevoegd.`);
+            // Reset alleen de velden die veranderen
+            setActivity('');
+            setNotes('');
+          } catch (error) {
+            setStatus('Er is een fout opgetreden. Zie console voor details.');
+            console.error("Fout bij toevoegen:", error);
+          }
+        };
+
+        return (
+          <div className="max-w-xl mx-auto p-4 sm:p-8 bg-white shadow-md rounded-lg mt-10">
+            <h1 className="text-2xl font-bold text-gray-800 mb-6">Reisschema Item Toevoegen</h1>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="date" className="block text-sm font-medium text-gray-700">Datum</label>
+                <input
+                  type="date"
+                  id="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700">Stad</label>
+                <select
+                    id="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    required
+                >
+                    {cities.sort().map(cityName => (
+                        <option key={cityName} value={cityName}>{cityName}</option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="activity" className="block text-sm font-medium text-gray-700">Activiteit</label>
+                <input
+                  type="text"
+                  id="activity"
+                  placeholder="bv. Old Quarter verkennen"
+                  value={activity}
+                  onChange={(e) => setActivity(e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Notities (optioneel)</label>
+                <input
+                  type="text"
+                  id="notes"
+                  placeholder="bv. Bia Hoi proberen!"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              
+              <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <i className="fa-solid fa-plus mr-2 mt-0.5"></i> Toevoegen aan Reisschema
+              </button>
+            </form>
+
+            {status && (
+              <p className={`mt-4 text-sm text-center p-3 rounded-md ${status.startsWith('Fout') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                {status}
+              </p>
+            )}
+          </div>
+        );
+      }
+
+      ReactDOM.render(<AddItemForm />, document.getElementById('root'));
+    </script>
+</body>
+</html>
