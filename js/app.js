@@ -217,7 +217,7 @@ function ExpensesPage() {
                 <div className="flex items-center space-x-4">
                     <label className="font-semibold">Betaald door:</label>
                     <div className="flex items-center"> <input type="radio" id="dewika" name="paidBy" value="Dewika" checked={paidBy === 'Dewika'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="dewika" className="ml-2">Dewika</label> </div>
-                    <div className="flex items-center"> <input type="radio" id="reisgenoot" name="paidBy" value="Reisgenoot" checked={paidBy === 'Reisgenoot'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="reisgenoot" className="ml-2">Reisgenoot</label> </div>
+                    <div className="flex items-center"> <input type="radio" id="reisgenoot" name="paidBy" value="Reisgenoot" checked={paidBy === 'Reisgenoot'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="reisgenoot" className="ml-2">Avinash</label> </div>
                 </div>
                 <button type="submit" className="w-full bg-accent text-white font-bold p-2 mt-1 rounded-md hover:bg-blue-600 transition-colors">Toevoegen</button>
                 </form>
