@@ -337,7 +337,7 @@ function HotelPage() {
         checkIn: '2025-07-20',
         checkOut: '2025-07-28',
         address: '21 Lý Thường Kiệt, Phan Chu Trinh, Hoàn Kiếm, Hà Nội, Vietnam',
-        imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/542998399.jpg?k=13b5dcf867086064f51d33192455490bb6dc4b2c050730b2da6b0c6f1452427f&o=&hp=1',
+        imageUrl: 'img/metropolex.jpg',
     };
 
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`;
