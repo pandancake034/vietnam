@@ -217,7 +217,7 @@ function ExpensesPage() {
                 <div className="flex items-center space-x-4">
                     <label className="font-semibold">Betaald door:</label>
                     <div className="flex items-center"> <input type="radio" id="dewika" name="paidBy" value="Dewika" checked={paidBy === 'Dewika'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="dewika" className="ml-2">Dewika</label> </div>
-                    <div className="flex items-center"> <input type="radio" id="reisgenoot" name="paidBy" value="Reisgenoot" checked={paidBy === 'Reisgenoot'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="reisgenoot" className="ml-2">Avinash</label> </div>
+                    <div className="flex items-center"> <input type="radio" id="reisgenoot" name="paidBy" value="Reisgenoot" checked={paidBy === 'Reisgenoot'} onChange={(e) => setPaidBy(e.target.value)} /> <label htmlFor="reisgenoot" className="ml-2">Reisgenoot</label> </div>
                 </div>
                 <button type="submit" className="w-full bg-accent text-white font-bold p-2 mt-1 rounded-md hover:bg-blue-600 transition-colors">Toevoegen</button>
                 </form>
@@ -329,17 +329,10 @@ function ItineraryPage() {
     );
 }
 
-// --- NIEUW: Hotel Pagina ---
-function HotelPage() {
-    const hotel = {
-        name: 'Metropolex',
-        stars: 4,
-        checkIn: '2025-07-20',
-        checkOut: '2025-07-28',
-        address: '21 Lý Thường Kiệt, Phan Chu Trinh, Hoàn Kiếm, Hà Nội, Vietnam',
-        imageUrl: 'img/metropolex.jpg',
-    };
+// --- AANGEPAST: Hotel Pagina ---
 
+// Aparte component voor een enkele hotelkaart
+const HotelCard = ({ hotel }) => {
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`;
 
     const renderStars = (count) => {
@@ -351,28 +344,56 @@ function HotelPage() {
     };
 
     return (
-        <div className="space-y-4">
-            <Card className="!p-0 overflow-hidden">
-                <img src={hotel.imageUrl} alt={`Foto van ${hotel.name}`} className="w-full h-48 object-cover" />
-                <div className="p-4">
-                    <h2 className="text-2xl font-bold text-text-primary">{hotel.name}</h2>
-                    <div className="flex items-center my-2">
-                        {renderStars(hotel.stars)}
-                    </div>
-                    <div className="text-sm text-text-secondary space-y-1">
-                        <p><i className="fa-solid fa-calendar-check fa-fw mr-2 text-accent"></i>Verblijf van {new Date(hotel.checkIn).toLocaleDateString('nl-NL')} tot {new Date(hotel.checkOut).toLocaleDateString('nl-NL')}</p>
-                        <p><i className="fa-solid fa-location-dot fa-fw mr-2 text-accent"></i>{hotel.address}</p>
-                    </div>
-                    <a 
-                        href={googleMapsUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="block w-full text-center bg-accent text-white font-bold p-2 mt-4 rounded-md hover:bg-blue-600 transition-colors"
-                    >
-                        Open in Google Maps
-                    </a>
+        <Card className="!p-0 overflow-hidden">
+            <img src={hotel.imageUrl} alt={`Foto van ${hotel.name}`} className="w-full h-48 object-cover" />
+            <div className="p-4">
+                <h2 className="text-2xl font-bold text-text-primary">{hotel.name}</h2>
+                <div className="flex items-center my-2">
+                    {renderStars(hotel.stars)}
                 </div>
-            </Card>
+                <div className="text-sm text-text-secondary space-y-1">
+                    <p><i className="fa-solid fa-calendar-check fa-fw mr-2 text-accent"></i>Verblijf van {new Date(hotel.checkIn).toLocaleDateString('nl-NL')} tot {new Date(hotel.checkOut).toLocaleDateString('nl-NL')}</p>
+                    <p><i className="fa-solid fa-location-dot fa-fw mr-2 text-accent"></i>{hotel.address}</p>
+                </div>
+                <a 
+                    href={googleMapsUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block w-full text-center bg-accent text-white font-bold p-2 mt-4 rounded-md hover:bg-blue-600 transition-colors"
+                >
+                    Open in Google Maps
+                </a>
+            </div>
+        </Card>
+    );
+};
+
+
+function HotelPage() {
+    const hotels = [
+        {
+            id: 1,
+            name: 'Metropolex',
+            stars: 4,
+            checkIn: '2025-07-20',
+            checkOut: '2025-07-28',
+            address: '21 Lý Thường Kiệt, Phan Chu Trinh, Hoàn Kiếm, Hà Nội, Vietnam',
+            imageUrl: 'https://i.ibb.co/ccy6sLtj/metropolex.jpg',
+        },
+        {
+            id: 2,
+            name: 'Qualia de Hoi An Hotel',
+            stars: 4,
+            checkIn: '2025-07-28',
+            checkOut: '2025-08-05',
+            address: 'Thanh Tay, Cam Chau, Hoi An, Quang Nam, Vietnam',
+            imageUrl: 'https://i.ibb.co/ccy6sLtj/metropolex.jpg',
+        }
+    ];
+
+    return (
+        <div className="space-y-6">
+            {hotels.map(hotel => <HotelCard key={hotel.id} hotel={hotel} />)}
         </div>
     );
 }
@@ -441,7 +462,7 @@ function App() {
                 </button>
                 <div className="flex-grow text-center">
                     <p className="text-sm text-text-secondary">{getGreeting()}</p>
-                    <h1 className="text-lg font-bold text-text-primary">Hello, Dewika!</h1>
+                    <h1 className="text-lg font-bold text-text-primary">Hello, Dewika</h1>
                 </div>
                 <div className="w-10 h-10"><img src="https://i.pravatar.cc/150?u=dewika" alt="Profielfoto" className="w-full h-full rounded-full object-cover" /></div>
             </header>
