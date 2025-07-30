@@ -1,0 +1,45 @@
+body { 
+    font-family: 'Inter', sans-serif; 
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale; 
+}
+
+html { 
+    scroll-behavior: smooth; 
+}
+
+/* Verberg de pijltjes bij nummer-inputs */
+input[type=number] { 
+    -moz-appearance: textfield; 
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+input[type="checkbox"]:checked { 
+    background-color: #4A90E2; 
+    border-color: #4A90E2; 
+}
+
+/* Stijlen voor de swipe-animatie */
+.day-container {
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+.slide-out-left { 
+    transform: translateX(-100%); 
+    opacity: 0; 
+}
+.slide-out-right { 
+    transform: translateX(100%); 
+    opacity: 0; 
+}
+.slide-in-from-right { 
+    transform: translateX(100%); 
+    opacity: 0; 
+}
+.slide-in-from-left { 
+    transform: translateX(-100%); 
+    opacity: 0; 
+}
