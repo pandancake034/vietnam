@@ -693,33 +693,33 @@ function ToursPage() {
         },
         {
             id: 2,
-            name: 'Kookcursus in Hoi An',
-            location: 'Hoi An, Quảng Nam',
-            date: '2025-11-03',
-            duration: 'Halve dag',
-            contact: 'Red Bridge Cooking School',
+            name: 'War Museum',
+            location: 'Ho Chi Minh City',
+            date: '2025-11-01',
+            duration: 'H2 uur',
+            contact: '+842839305587',
             voucherUrl: '#',
-            imageUrl: 'https://www.avinashr.nl/vietnam/img/cooking.png'
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/war.png'
         },
         {
             id: 3,
-            name: 'Củ Chi Tunnels Tour',
-            location: 'Củ Chi, Ho Chi Minh Stad',
-            date: '2025-11-09',
-            duration: 'Halve dag',
+            name: 'Halang Bay 3-daagse tour',
+            location: 'Halong Bay, vanuit Hanoi',
+            date: '2025-11-10',
+            duration: '3 dagen, 2 nachten',
             contact: 'Local Vietnam Tours',
             voucherUrl: '#',
             imageUrl: 'https://www.avinashr.nl/vietnam/img/cuchi.png'
         },
         {
             id: 4,
-            name: 'Mekong Delta Dagtrip',
-            location: 'Mekongdelta, vanuit Ho Chi Minh',
-            date: '2025-11-11',
-            duration: 'Hele dag',
+            name: 'Hang Tien/Tu Lan tour',
+            location: 'Hang Tien, Quảng Bình',
+            date: '2025-11-06',
+            duration: '3 dagen, 2 nachten',
             contact: 'The Sinh Tourist',
             voucherUrl: '#',
-            imageUrl: 'https://www.avinashr.nl/vietnam/img/mekong.png'
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/cave.png'
         },
         {
             id: 5,
