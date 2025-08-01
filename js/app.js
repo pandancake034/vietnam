@@ -684,12 +684,12 @@ function ToursPage() {
         {
             id: 1,
             name: 'Chi Chi Tunnels',
-            location: 'Ha Long Bay, Quảng Ninh',
+            location: 'Củ Chi, Ho Chi Minh City, Vietnam',
             date: '2025-10-31',
-            duration: '2 dagen',
+            duration: '1 dag',
             contact: 'Glory Legend Cruises',
             voucherUrl: '#',
-            imageUrl: 'https://www.avinashr.nl/vietnam/img/halong.png'
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/chichi.png'
         },
         {
             id: 2,
