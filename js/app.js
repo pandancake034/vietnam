@@ -498,13 +498,13 @@ function FlightPage() {
         {
             id: 1,
             from: { city: 'Amsterdam', code: 'AMS' },
-            to: { city: 'Hanoi', code: 'HAN' },
-            departureTime: '2025-10-29T21:40:00',
-            arrivalTime: '2025-10-30T15:30:00',
-            airline: 'EVA Air',
-            flightNumber: 'BR 76',
-            duration: '11u 50m',
-            pnr: 'QZ8A4X',
+            to: { city: 'Doha', code: 'DOH' },
+            departureTime: '2025-10-29T15:05:00',
+            arrivalTime: '2025-10-30T23:15:00',
+            airline: 'Qatar Airways',
+            flightNumber: 'QR 274',
+            duration: '06u 10m',
+            pnr: '7VBJND',
             seats: '32A, 32B'
         },
         {
