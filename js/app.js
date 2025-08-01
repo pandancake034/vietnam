@@ -384,8 +384,8 @@ function HotelPage() {
             id: 2,
             name: 'Qualia de Hoi An Hotel',
             stars: 4,
-            checkIn: '2025-07-28',
-            checkOut: '2025-08-05',
+            checkIn: '2025-11-04',
+            checkOut: '2025-11-09',
             address: 'Thanh Tay, Cam Chau, Hoi An, Quang Nam, Vietnam',
             imageUrl: 'https://i.ibb.co/ccy6sLtj/metropolex.jpg',
         }
