@@ -435,6 +435,135 @@ function ItineraryPage() {
     );
 }
 
+
+// --- Component voor een enkele Vluchtkaart ---
+const FlightCard = ({ flight }) => {
+    // Genereert een link naar Google Flights voor status, maar kan ook naar de airline wijzen
+    const flightStatusUrl = `http://googleusercontent.com/search?q=${encodeURIComponent(flight.airline + ' ' + flight.flightNumber)}`;
+
+    return (
+        <Card>
+            <div className="border-b border-border pb-3 mb-3">
+                <div className="flex justify-between items-center">
+                    <span className="font-bold text-lg text-text-secondary">{flight.from.code}</span>
+                    <i className="fa-solid fa-plane-departure text-accent text-2xl mx-4"></i>
+                    <span className="font-bold text-lg text-text-secondary">{flight.to.code}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm text-text-secondary mt-1">
+                    <span>{flight.from.city}</span>
+                    <span>{flight.to.city}</span>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm mb-4">
+                <div>
+                    <p className="font-bold text-text-primary">Vertrek</p>
+                    <p className="text-text-secondary">{new Date(flight.departureTime).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' })} - {new Date(flight.departureTime).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</p>
+                </div>
+                <div>
+                    <p className="font-bold text-text-primary">Aankomst</p>
+                    <p className="text-text-secondary">{new Date(flight.arrivalTime).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' })} - {new Date(flight.arrivalTime).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</p>
+                </div>
+                <div>
+                    <p className="font-bold text-text-primary">Vlucht</p>
+                    <p className="text-text-secondary">{flight.airline} {flight.flightNumber}</p>
+                </div>
+                 <div>
+                    <p className="font-bold text-text-primary">Vluchtduur</p>
+                    <p className="text-text-secondary">{flight.duration}</p>
+                </div>
+            </div>
+
+            <div className="bg-gray-100 p-3 rounded-md space-y-2">
+                 <p className="text-sm"><i className="fa-solid fa-ticket fa-fw mr-2 text-accent"></i>Boekingscode: <span className="font-mono bg-gray-200 px-1 rounded">{flight.pnr}</span></p>
+                 <p className="text-sm"><i className="fa-solid fa-chair fa-fw mr-2 text-accent"></i>Stoelen: <span className="font-semibold">{flight.seats}</span></p>
+            </div>
+            
+             <a 
+                href={flightStatusUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block w-full text-center bg-accent text-white font-bold p-2 mt-4 rounded-md hover:bg-blue-600 transition-colors"
+            >
+                Check Online In
+            </a>
+        </Card>
+    );
+};
+
+
+// --- Vliegschema Pagina ---
+function FlightPage() {
+    const flights = [
+        {
+            id: 1,
+            from: { city: 'Amsterdam', code: 'AMS' },
+            to: { city: 'Hanoi', code: 'HAN' },
+            departureTime: '2025-10-29T21:40:00',
+            arrivalTime: '2025-10-30T15:30:00',
+            airline: 'EVA Air',
+            flightNumber: 'BR 76',
+            duration: '11u 50m',
+            pnr: 'QZ8A4X',
+            seats: '32A, 32B'
+        },
+        {
+            id: 2,
+            from: { city: 'Hanoi', code: 'HAN' },
+            to: { city: 'Da Nang', code: 'DAD' },
+            departureTime: '2025-11-02T11:45:00',
+            arrivalTime: '2025-11-02T13:05:00',
+            airline: 'VietJet Air',
+            flightNumber: 'VJ 513',
+            duration: '1u 20m',
+            pnr: 'W9RT2P',
+            seats: '15E, 15F'
+        },
+        {
+            id: 3,
+            from: { city: 'Da Nang', code: 'DAD' },
+            to: { city: 'Ho Chi Minh', code: 'SGN' },
+            departureTime: '2025-11-08T18:00:00',
+            arrivalTime: '2025-11-08T19:30:00',
+            airline: 'Vietnam Airlines',
+            flightNumber: 'VN 141',
+            duration: '1u 30m',
+            pnr: 'L5K2V8',
+            seats: '21A, 21C'
+        },
+         {
+            id: 4,
+            from: { city: 'Ho Chi Minh', code: 'SGN' },
+            to: { city: 'Bangkok', code: 'BKK' },
+            departureTime: '2025-11-15T19:05:00',
+            arrivalTime: '2025-11-15T20:35:00',
+            airline: 'Thai Airways',
+            flightNumber: 'TG 557',
+            duration: '1u 30m',
+            pnr: 'Y7B3N1',
+            seats: '40H, 40J'
+        },
+        {
+            id: 5,
+            from: { city: 'Bangkok', code: 'BKK' },
+            to: { city: 'Amsterdam', code: 'AMS' },
+            departureTime: '2025-11-16T00:35:00',
+            arrivalTime: '2025-11-16T07:15:00',
+            airline: 'EVA Air',
+            flightNumber: 'BR 75',
+            duration: '12u 40m',
+            pnr: 'Y7B3N1',
+            seats: '40H, 40J'
+        }
+    ];
+
+    return (
+        <div className="space-y-6">
+            {flights.map(flight => <FlightCard key={flight.id} flight={flight} />)}
+        </div>
+    );
+}
+
 // Aparte component voor een enkele hotelkaart (GECORRIGEERD & VERBETERD)
 const HotelCard = ({ hotel }) => {
     // BUGFIX: Correcte Google Maps URL structuur en correct gebruik van template literal
