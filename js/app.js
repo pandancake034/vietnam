@@ -388,7 +388,7 @@ function HotelPage() {
             checkOut: '2025-11-05',
             address: 'Thanh Tay, Cam Chau, Hoi An, Quang Nam, Vietnam',
             imageUrl: 'https://www.avinashr.nl/vietnam/img/hoian.png',
-        }
+        },
         {
             id: 3,
             name: 'Commander Lodge',
