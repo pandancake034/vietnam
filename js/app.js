@@ -676,7 +676,7 @@ function App() {
         'Reisschema': <ItineraryPage />,
         'Hotels': <HotelPage />, 
         'Vliegschema': <FlightPage />,
-        'Tours & Activiteiten': <ToursPage />,
+        'Tours & Activiteiten': <PlaceholderPage title="Tours" />,
         'Uitgaven': <ExpensesPage />, 
         'Weer': <WeatherPage />,
     };
