@@ -245,41 +245,6 @@ function ExpensesPage() {
         </div>
     );
 }
-// --- Component voor de toggle switch tussen dag- en weekweergave ---
-const ToggleSwitch = ({ viewMode, onToggle }) => (
-    // De 'onClick' is hier verwijderd om dubbele aanroepen te voorkomen
-    <div className="relative w-40 h-10 bg-gray-200 rounded-full p-1 flex cursor-pointer">
-        <div 
-            className={`absolute top-1 left-1 w-[calc(50%-4px)] h-8 bg-accent rounded-full shadow-md transition-transform duration-300 ease-in-out transform ${
-                viewMode === 'week' ? 'translate-x-full' : 'translate-x-0'
-            }`}
-        ></div>
-        <div className="w-1/2 h-full flex items-center justify-center z-10 font-bold text-sm" onClick={() => onToggle('day')}>
-            <span className={viewMode === 'day' ? 'text-white' : 'text-text-primary'}>Dag</span>
-        </div>
-        <div className="w-1/2 h-full flex items-center justify-center z-10 font-bold text-sm" onClick={() => onToggle('week')}>
-            <span className={viewMode === 'week' ? 'text-white' : 'text-text-primary'}>Week</span>
-        </div>
-    </div>
-);
-
-// Component voor de weergave van één activiteit
-const ItineraryItem = ({ item, onToggleComplete }) => (
-    <div key={item.id} className="flex items-start space-x-3">
-        <input 
-            type="checkbox" 
-            checked={item.completed} 
-            onChange={() => onToggleComplete(item.id, item.completed)} 
-            className="mt-1 h-5 w-5 rounded border-gray-300 text-accent focus:ring-accent" 
-        />
-        <div className="flex-1">
-            <p className={`font-semibold ${item.completed ? 'line-through text-text-secondary' : 'text-text-primary'}`}>
-                {item.activity}
-            </p>
-            <p className="text-sm text-text-secondary">{item.notes}</p>
-        </div>
-    </div>
-);
 
 // Aparte component voor de slide toggle knop
 const ToggleSwitch = ({ viewMode, onToggle }) => (
