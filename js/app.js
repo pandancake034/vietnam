@@ -245,10 +245,10 @@ function ExpensesPage() {
         </div>
     );
 }
-
-// Aparte component voor de slide toggle knop
+// --- Component voor de toggle switch tussen dag- en weekweergave ---
 const ToggleSwitch = ({ viewMode, onToggle }) => (
-    <div className="relative w-40 h-10 bg-gray-200 rounded-full p-1 flex cursor-pointer" onClick={onToggle}>
+    // De 'onClick' is hier verwijderd om dubbele aanroepen te voorkomen
+    <div className="relative w-40 h-10 bg-gray-200 rounded-full p-1 flex cursor-pointer">
         <div 
             className={`absolute top-1 left-1 w-[calc(50%-4px)] h-8 bg-accent rounded-full shadow-md transition-transform duration-300 ease-in-out transform ${
                 viewMode === 'week' ? 'translate-x-full' : 'translate-x-0'
