@@ -395,7 +395,7 @@ function HotelPage() {
             stars: 4,
             checkIn: '2025-11-05',
             checkOut: '2025-11-08',
-            address: 'Phong NHA, Bố Trạch District, Quảng Bình, Vietnam',
+            address: 'Commander Lodge, Phong NHA, Bố Trạch, Quảng Bình, Vietnam',
             imageUrl: 'https://www.avinashr.nl/vietnam/img/commander.png',
         }
     ];
