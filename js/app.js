@@ -676,6 +676,7 @@ function App() {
         'Reisschema': <ItineraryPage />,
         'Hotels': <HotelPage />, 
         'Vliegschema': <FlightPage />,
+        'Tours & Activiteiten': <ToursPage />,
         'Uitgaven': <ExpensesPage />, 
         'Weer': <WeatherPage />,
     };
@@ -685,6 +686,7 @@ function App() {
         { page: 'Reisschema', icon: 'fa-route', label: 'Reisschema' },
         { page: 'Hotels', icon: 'fa-hotel', label: 'Hotels' },
         { page: 'Vliegschema', icon: 'fa-plane-departure', label: 'Vliegschema' },
+        { page: 'Tours & Activiteiten', icon: 'fa-solid fa-mountain-sun', label: 'Tours & Activiteiten' },
         { page: 'Uitgaven', icon: 'fa-money-bill-wave', label: 'Uitgaven' },
         { page: 'Weer', icon: 'fa-cloud-sun-rain', label: 'Weer' },
     ];
