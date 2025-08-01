@@ -674,8 +674,8 @@ function App() {
     const pageComponents = {
         'Home': <HomePage />, 
         'Reisschema': <ItineraryPage />,
-        'Hotels': <HotelPage />, // Aangepast
-        'Vliegschema': <PlaceholderPage title="Vliegschema" />,
+        'Hotels': <HotelPage />, 
+        'Vliegschema': <FlightPage />,
         'Uitgaven': <ExpensesPage />, 
         'Weer': <WeatherPage />,
     };
