@@ -373,10 +373,10 @@ function HotelPage() {
     const hotels = [
         {
             id: 1,
-            name: 'Metropolex',
+            name: 'Metrolux',
             stars: 4,
-            checkIn: '2025-07-20',
-            checkOut: '2025-07-28',
+            checkIn: '30-10-25',
+            checkOut: '01-11-25',
             address: '21 Lý Thường Kiệt, Phan Chu Trinh, Hoàn Kiếm, Hà Nội, Vietnam',
             imageUrl: 'https://i.ibb.co/ccy6sLtj/metropolex.jpg',
         },
