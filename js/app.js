@@ -435,6 +435,46 @@ function ItineraryPage() {
     );
 }
 
+// Aparte component voor een enkele hotelkaart (GECORRIGEERD & VERBETERD)
+const HotelCard = ({ hotel }) => {
+    // BUGFIX: Correcte Google Maps URL structuur en correct gebruik van template literal
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`;
+
+    // VERBETERING: Compactere manier om sterren te renderen
+    const renderStars = (count) => (
+        Array.from({ length: 5 }, (_, i) => (
+            <i key={i} className={`fa-solid fa-star ${i < count ? 'text-yellow-400' : 'text-gray-300'}`}></i>
+        ))
+    );
+
+    return (
+        <Card className="!p-0 overflow-hidden">
+            <img src={hotel.imageUrl} alt={`Foto van ${hotel.name}`} className="w-full h-48 object-cover" />
+            <div className="p-4">
+                <h2 className="text-2xl font-bold text-text-primary">{hotel.name}</h2>
+                <div className="flex items-center my-2">{renderStars(hotel.stars)}</div>
+                <div className="text-sm text-text-secondary space-y-1">
+                    <p>
+                        <i className="fa-solid fa-calendar-check fa-fw mr-2 text-accent"></i>
+                        Verblijf van {new Date(hotel.checkIn).toLocaleDateString('nl-NL')} tot {new Date(hotel.checkOut).toLocaleDateString('nl-NL')}
+                    </p>
+                    <p>
+                        <i className="fa-solid fa-location-dot fa-fw mr-2 text-accent"></i>
+                        {hotel.address}
+                    </p>
+                </div>
+                <a 
+                    href={googleMapsUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block w-full text-center bg-accent text-white font-bold p-2 mt-4 rounded-md hover:bg-blue-600 transition-colors"
+                >
+                    Open in Google Maps
+                </a>
+            </div>
+        </Card>
+    );
+};
 
 function HotelPage() {
     const hotels = [
