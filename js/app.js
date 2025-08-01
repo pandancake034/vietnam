@@ -246,83 +246,175 @@ function ExpensesPage() {
     );
 }
 
+// Aparte component voor de slide toggle knop
+const ToggleSwitch = ({ viewMode, onToggle }) => (
+    <div className="relative w-40 h-10 bg-gray-200 rounded-full p-1 flex cursor-pointer" onClick={onToggle}>
+        <div 
+            className={`absolute top-1 left-1 w-[calc(50%-4px)] h-8 bg-accent rounded-full shadow-md transition-transform duration-300 ease-in-out transform ${
+                viewMode === 'week' ? 'translate-x-full' : 'translate-x-0'
+            }`}
+        ></div>
+        <div className="w-1/2 h-full flex items-center justify-center z-10 font-bold text-sm" onClick={() => onToggle('day')}>
+            <span className={viewMode === 'day' ? 'text-white' : 'text-text-primary'}>Dag</span>
+        </div>
+        <div className="w-1/2 h-full flex items-center justify-center z-10 font-bold text-sm" onClick={() => onToggle('week')}>
+            <span className={viewMode === 'week' ? 'text-white' : 'text-text-primary'}>Week</span>
+        </div>
+    </div>
+);
+
+// Component voor de weergave van één activiteit
+const ItineraryItem = ({ item, onToggleComplete }) => (
+    <div key={item.id} className="flex items-start space-x-3">
+        <input 
+            type="checkbox" 
+            checked={item.completed} 
+            onChange={() => onToggleComplete(item.id, item.completed)} 
+            className="mt-1 h-5 w-5 rounded border-gray-300 text-accent focus:ring-accent" 
+        />
+        <div className="flex-1">
+            <p className={`font-semibold ${item.completed ? 'line-through text-text-secondary' : 'text-text-primary'}`}>
+                {item.activity}
+            </p>
+            <p className="text-sm text-text-secondary">{item.notes}</p>
+        </div>
+    </div>
+);
+
 function ItineraryPage() {
     const { data: itinerary, isLoading } = useFirestoreQuery(itineraryCollection.orderBy('date'));
+    
+    const [viewMode, setViewMode] = React.useState('day'); // 'day' of 'week'
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [animationClass, setAnimationClass] = React.useState('');
     const touchStartX = React.useRef(0);
 
-    const uniqueDates = React.useMemo(() => [...new Set(itinerary.map(item => item.date))].sort(), [itinerary]);
+    // Helper om week-informatie uit een datum te halen
+    const getWeekInfo = (dateStr) => {
+        const date = new Date(dateStr);
+        const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+        const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+        const weekNumber = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+        
+        const dayOfWeek = date.getDay(); // 0 = zondag
+        const firstDayOfWeek = new Date(date);
+        firstDayOfWeek.setDate(date.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1)); // Maandag als start
+        const lastDayOfWeek = new Date(firstDayOfWeek);
+        lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+        
+        return {
+            id: `${date.getFullYear()}-W${weekNumber}`,
+            start: firstDayOfWeek,
+            end: lastDayOfWeek
+        };
+    };
 
-    React.useEffect(() => {
-        if (uniqueDates.length > 0) {
-            const today = new Date().toISOString().slice(0, 10);
-            const todayIndex = uniqueDates.indexOf(today);
-            setCurrentIndex(todayIndex !== -1 ? todayIndex : 0);
+    // Data voorbereiden voor dag- en weekweergave
+    const { uniqueDates, weeksData, uniqueWeeks } = React.useMemo(() => {
+        const dates = [...new Set(itinerary.map(item => item.date))].sort();
+        
+        const groupedByWeek = itinerary.reduce((acc, item) => {
+            const { id, start, end } = getWeekInfo(item.date);
+            if (!acc[id]) {
+                acc[id] = { start, end, items: [] };
+            }
+            acc[id].items.push(item);
+            return acc;
+        }, {});
+
+        const weeks = Object.keys(groupedByWeek).sort();
+
+        return { uniqueDates: dates, weeksData: groupedByWeek, uniqueWeeks: weeks };
+    }, [itinerary]);
+
+    // Navigatie logica voor zowel dagen als weken
+    const changePeriod = (direction) => {
+        const maxIndex = viewMode === 'day' ? uniqueDates.length - 1 : uniqueWeeks.length - 1;
+        const newIndex = currentIndex + direction;
+        if (newIndex < 0 || newIndex > maxIndex) return;
+        
+        setAnimationClass(direction > 0 ? 'slide-out-left' : 'slide-out-right');
+        setTimeout(() => {
+            setCurrentIndex(newIndex);
+            setAnimationClass(direction > 0 ? 'slide-in-from-right' : 'slide-in-from-left');
+            setTimeout(() => setAnimationClass(''), 10);
+        }, 300);
+    };
+
+    // Handler voor het wisselen van weergave
+    const handleToggleView = (newView) => {
+        if (viewMode !== newView) {
+            setViewMode(newView);
+            setCurrentIndex(0); // Reset index bij wisselen
         }
-    }, [uniqueDates]);
+    };
+    
+    // Swipe gestures
+    const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+    const handleTouchEnd = (e) => {
+        const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(deltaX) > 50) changePeriod(deltaX < 0 ? 1 : -1);
+    };
 
     const handleToggleComplete = async (id, currentStatus) => {
         await itineraryCollection.doc(id).update({ completed: !currentStatus });
     };
 
-    const changeDay = (direction) => {
-        const newIndex = currentIndex + direction;
-        if (newIndex < 0 || newIndex >= uniqueDates.length) return;
-        setAnimationClass(direction > 0 ? 'slide-out-left' : 'slide-out-right');
-        setTimeout(() => {
-            setCurrentIndex(newIndex);
-            setAnimationClass(direction > 0 ? 'slide-in-from-right' : 'slide-in-from-left');
-            setTimeout(() => setAnimationClass(''), 10); 
-        }, 300);
-    };
-    
-    const handleDateChange = (e) => {
-        const newIndex = uniqueDates.indexOf(e.target.value);
-        if (newIndex !== -1) setCurrentIndex(newIndex);
-    };
-    
-    const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
-    const handleTouchEnd = (e) => {
-        const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-        if (Math.abs(deltaX) > 50) changeDay(deltaX < 0 ? 1 : -1);
-    };
-
     if (isLoading) return <LoadingSpinner />;
     
-    const selectedDate = uniqueDates[currentIndex];
-    const itemsForSelectedDate = itinerary.filter(item => item.date === selectedDate);
+    const maxIndex = viewMode === 'day' ? uniqueDates.length - 1 : uniqueWeeks.length - 1;
+    let title = '';
+    let content = <p className="text-center text-text-secondary p-8">Geen planning.</p>;
+
+    if (viewMode === 'day' && uniqueDates.length > 0) {
+        const selectedDate = uniqueDates[currentIndex];
+        const itemsForSelectedDate = itinerary.filter(item => item.date === selectedDate);
+        title = new Date(selectedDate).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
+        if (itemsForSelectedDate.length > 0) {
+           content = <div className="space-y-4">{itemsForSelectedDate.map(item => <ItineraryItem key={item.id} item={item} onToggleComplete={handleToggleComplete} />)}</div>
+        }
+    } else if (viewMode === 'week' && uniqueWeeks.length > 0) {
+        const selectedWeekId = uniqueWeeks[currentIndex];
+        const weekInfo = weeksData[selectedWeekId];
+        title = `Week ${selectedWeekId.split('-W')[1]} (${weekInfo.start.toLocaleDateString('nl-NL', {day: 'numeric', month: 'short'})} - ${weekInfo.end.toLocaleDateString('nl-NL', {day: 'numeric', month: 'short'})})`;
+        
+        const itemsByDay = weekInfo.items.reduce((acc, item) => {
+            if (!acc[item.date]) acc[item.date] = [];
+            acc[item.date].push(item);
+            return acc;
+        }, {});
+
+        content = (
+            <div className="space-y-6">
+                {Object.keys(itemsByDay).sort().map(date => (
+                    <div key={date}>
+                        <h4 className="font-bold border-b border-border mb-2 pb-1">
+                            {new Date(date).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })}
+                        </h4>
+                        <div className="space-y-3 pl-2">
+                           {itemsByDay[date].map(item => <ItineraryItem key={item.id} item={item} onToggleComplete={handleToggleComplete} />)}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col h-full">
-            <Card className="mb-4 !p-2 flex items-center justify-between">
-                <button onClick={() => changeDay(-1)} disabled={currentIndex === 0} className="p-2 disabled:opacity-25"><i className="fa-solid fa-chevron-left"></i></button>
-                <input type="date" value={selectedDate || ''} onChange={handleDateChange} className="border-none text-center font-bold text-lg bg-transparent"/>
-                <button onClick={() => changeDay(1)} disabled={currentIndex >= uniqueDates.length - 1} className="p-2 disabled:opacity-25"><i className="fa-solid fa-chevron-right"></i></button>
+            <Card className="mb-4 !p-2 flex items-center justify-center">
+                 <ToggleSwitch viewMode={viewMode} onToggle={handleToggleView} />
             </Card>
+
+            <Card className="mb-4 !p-2 flex items-center justify-between">
+                <button onClick={() => changePeriod(-1)} disabled={currentIndex === 0} className="p-2 disabled:opacity-25"><i className="fa-solid fa-chevron-left"></i></button>
+                <h3 className="font-bold text-lg text-center">{title}</h3>
+                <button onClick={() => changePeriod(1)} disabled={currentIndex >= maxIndex} className="p-2 disabled:opacity-25"><i className="fa-solid fa-chevron-right"></i></button>
+            </Card>
+
             <div className="flex-grow overflow-y-auto" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                 <div className={`day-container bg-surface p-4 rounded-lg shadow ${animationClass}`}>
-                    {itemsForSelectedDate.length > 0 ? (
-                        <div>
-                            <h3 className="font-bold text-xl mb-3 border-b border-border pb-2">
-                                {new Date(selectedDate).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })}
-                                <span className="text-sm font-normal text-text-secondary ml-2">({itemsForSelectedDate[0].city})</span>
-                            </h3>
-                            <div className="space-y-4">
-                                {itemsForSelectedDate.map(item => (
-                                    <div key={item.id} className="flex items-start space-x-3">
-                                        <input type="checkbox" checked={item.completed} onChange={() => handleToggleComplete(item.id, item.completed)} className="mt-1 h-5 w-5 rounded border-gray-300 text-accent focus:ring-accent" />
-                                        <div className="flex-1">
-                                            <p className={`font-semibold ${item.completed ? 'line-through text-text-secondary' : 'text-text-primary'}`}>{item.activity}</p>
-                                            <p className="text-sm text-text-secondary">{item.notes}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ) : (
-                        <p className="text-center text-text-secondary p-8">Geen planning voor deze dag.</p>
-                    )}
+                    {content}
                 </div>
             </div>
         </div>
