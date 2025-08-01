@@ -378,7 +378,7 @@ function HotelPage() {
             checkIn: '10-30-25',
             checkOut: '01-11-25',
             address: '21 Lý Thường Kiệt, Phan Chu Trinh, Hoàn Kiếm, Hà Nội, Vietnam',
-            imageUrl: 'https://i.ibb.co/ccy6sLtj/metropolex.jpg',
+            imageUrl: '..img/metrolux.png',
         },
         {
             id: 2,
