@@ -511,8 +511,8 @@ function HotelPage() {
             stars: 5,
             checkIn: '2025-11-17',
             checkOut: '2025-11-19',
-            address: 'Commander Lodge, Phong NHA, Bố Trạch, Quảng Bình, Vietnam',
-            imageUrl: 'https://www.avinashr.nl/vietnam/img/commander.png',
+            address: 'KK Sapa Hotel, 25 Violet, TT. Sa Pa, Sa Pa, Lào Cai 31700, Vietnam',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/sapa.png',
         }
     ];
 
