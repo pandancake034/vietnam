@@ -652,6 +652,104 @@ function HotelPage() {
     );
 }
 
+// --- Component voor een enkele Tourkaart ---
+const TourCard = ({ tour }) => (
+    <Card className="!p-0 overflow-hidden">
+        <img src={tour.imageUrl} alt={`Afbeelding voor ${tour.name}`} className="w-full h-40 object-cover" />
+        <div className="p-4">
+            <h2 className="text-xl font-bold text-text-primary mb-1">{tour.name}</h2>
+            <p className="text-sm text-text-secondary mb-3">{tour.location}</p>
+            
+            <div className="text-sm space-y-2">
+                <p><i className="fa-solid fa-calendar-day fa-fw mr-2 text-accent"></i>Datum: <span className="font-semibold">{new Date(tour.date).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })}</span></p>
+                <p><i className="fa-solid fa-clock fa-fw mr-2 text-accent"></i>Duur: <span className="font-semibold">{tour.duration}</span></p>
+                <p><i className="fa-solid fa-user fa-fw mr-2 text-accent"></i>Contactpersoon: <span className="font-semibold">{tour.contact}</span></p>
+            </div>
+            
+            <a 
+                href={tour.voucherUrl}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block w-full text-center bg-accent text-white font-bold p-2 mt-4 rounded-md hover:bg-blue-600 transition-colors"
+            >
+                Bekijk Voucher
+            </a>
+        </div>
+    </Card>
+);
+
+// --- Tours Pagina ---
+function ToursPage() {
+    const tours = [
+        {
+            id: 1,
+            name: 'Chi Chi Tunnels',
+            location: 'Ha Long Bay, Quảng Ninh',
+            date: '2025-10-31',
+            duration: '2 dagen',
+            contact: 'Glory Legend Cruises',
+            voucherUrl: '#',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/halong.png'
+        },
+        {
+            id: 2,
+            name: 'Kookcursus in Hoi An',
+            location: 'Hoi An, Quảng Nam',
+            date: '2025-11-03',
+            duration: 'Halve dag',
+            contact: 'Red Bridge Cooking School',
+            voucherUrl: '#',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/cooking.png'
+        },
+        {
+            id: 3,
+            name: 'Củ Chi Tunnels Tour',
+            location: 'Củ Chi, Ho Chi Minh Stad',
+            date: '2025-11-09',
+            duration: 'Halve dag',
+            contact: 'Local Vietnam Tours',
+            voucherUrl: '#',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/cuchi.png'
+        },
+        {
+            id: 4,
+            name: 'Mekong Delta Dagtrip',
+            location: 'Mekongdelta, vanuit Ho Chi Minh',
+            date: '2025-11-11',
+            duration: 'Hele dag',
+            contact: 'The Sinh Tourist',
+            voucherUrl: '#',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/mekong.png'
+        },
+        {
+            id: 5,
+            name: 'Sapa Trekking (2 dagen, 1 nacht)',
+            location: 'Sa Pa, Lào Cai',
+            date: '2025-11-17',
+            duration: '2 dagen',
+            contact: 'Sapa Sisters',
+            voucherUrl: '#',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/sapatrek.png'
+        },
+        {
+            id: 6,
+            name: 'Phong Nha Grot & Paradijsgrot',
+            location: 'Phong Nha, Quảng Bình',
+            date: '2025-11-06',
+            duration: 'Hele dag',
+            contact: 'Phong Nha Farmstay',
+            voucherUrl: '#',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/phongnha.png'
+        }
+    ];
+
+    return (
+        <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-text-primary">Geboekte Tours & Excursies</h2>
+            {tours.sort((a, b) => new Date(a.date) - new Date(b.date)).map(tour => <TourCard key={tour.id} tour={tour} />)}
+        </div>
+    );
+}
 
 // === Hoofd App Component ===
 function App() {
@@ -676,7 +774,7 @@ function App() {
         'Reisschema': <ItineraryPage />,
         'Hotels': <HotelPage />, 
         'Vliegschema': <FlightPage />,
-        'Tours & Activiteiten': <PlaceholderPage title="Tours" />,
+        'Tours & Activiteiten': <ToursPage />,
         'Uitgaven': <ExpensesPage />, 
         'Weer': <WeatherPage />,
     };
