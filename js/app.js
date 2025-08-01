@@ -375,19 +375,28 @@ function HotelPage() {
             id: 1,
             name: 'Metrolux',
             stars: 4,
-            checkIn: '10-30-25',
-            checkOut: '01-11-25',
+            checkIn: '2025-10-30',
+            checkOut: '2025-11-02',
             address: '21 Lý Thường Kiệt, Phan Chu Trinh, Hoàn Kiếm, Hà Nội, Vietnam',
-            imageUrl: '..img/metrolux.png',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/metrolux.png',
         },
         {
             id: 2,
             name: 'Qualia de Hoi An Hotel',
             stars: 4,
-            checkIn: '2025-11-04',
-            checkOut: '2025-11-09',
+            checkIn: '2025-11-02',
+            checkOut: '2025-11-05',
             address: 'Thanh Tay, Cam Chau, Hoi An, Quang Nam, Vietnam',
-            imageUrl: 'https://i.ibb.co/ccy6sLtj/metropolex.jpg',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/hoian.png',
+        }
+        {
+            id: 3,
+            name: 'Commander Lodge',
+            stars: 4,
+            checkIn: '2025-11-05',
+            checkOut: '2025-11-08',
+            address: 'Phong NHA, Bố Trạch District, Quảng Bình, Vietnam',
+            imageUrl: 'https://www.avinashr.nl/vietnam/img/commander.png',
         }
     ];
 
@@ -462,7 +471,7 @@ function App() {
                 </button>
                 <div className="flex-grow text-center">
                     <p className="text-sm text-text-secondary">{getGreeting()}</p>
-                    <h1 className="text-lg font-bold text-text-primary">Hello, Dewika</h1>
+                    <h1 className="text-lg font-bold text-text-primary">Hello, Dewika!</h1>
                 </div>
                 <div className="w-10 h-10"><img src="https://i.pravatar.cc/150?u=dewika" alt="Profielfoto" className="w-full h-full rounded-full object-cover" /></div>
             </header>
